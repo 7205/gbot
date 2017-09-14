@@ -762,7 +762,7 @@
                         basicBot.room.skippable = true
                     }, 5 * 1000);
                     setTimeout(function(id) {
-                        basicBot.userUtilities.moveUser(id, basicBot.settings.skipPosition, false);
+                        basicBot.userUtilities.moveUser(id, basicBot.settings.skipPosition, true);
                         basicBot.room.queueable = true;
                         if (locked) {
                             setTimeout(function() {
@@ -2998,24 +2998,6 @@
                                 time: basicBot.settings.maximumSongLength
                             }));
                         } else return API.sendChat(subChat(basicBot.chat.invalidtime, {
-                            name: chat.un
-                        }));
-                    }
-                }
-            },
-                functionality: function(chat, cmd) {
-                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void(0);
-                    if (!basicBot.commands.executable(this.rank, chat)) return void(0);
-                    else {
-                        var msg = chat.message;
-                        var pos = msg.substring(cmd.length + 1);
-                        if (!isNaN(pos)) {
-                            basicBot.settings.skipPosition = pos;
-                            return API.sendChat(subChat(basicBot.chat.skippos, {
-                                name: chat.un,
-                                position: basicBot.settings.skipPosition
-                            }));
-                        } else return API.sendChat(subChat(basicBot.chat.invalidpositionspecified, {
                             name: chat.un
                         }));
                     }
