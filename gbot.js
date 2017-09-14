@@ -282,9 +282,9 @@
             maximumCycletime: 10,
             voteSkip: false,
             voteSkipLimit: 10,
-            historySkip: true,
+            historySkip: false,
             timeGuard: true,
-            maximumSongLength: 10,
+            maximumSongLength: 8,
             autodisable: false,
             commandCooldown: 30,
             usercommandsEnabled: true,
@@ -316,7 +316,7 @@
             website: null,
             intervalMessages: [],
             messageInterval: 5,
-            songstats: true,
+            songstats: false,
             commandLiteral: '!',
             blacklists: {
                 NSFW: 'https://rawgit.com/basicBot/custom/master/blacklists/NSFWlist.json',
@@ -3003,7 +3003,25 @@
                     }
                 }
             },
-
+                functionality: function(chat, cmd) {
+                    if (this.type === 'exact' && chat.message.length !== cmd.length) return void(0);
+                    if (!basicBot.commands.executable(this.rank, chat)) return void(0);
+                    else {
+                        var msg = chat.message;
+                        var pos = msg.substring(cmd.length + 1);
+                        if (!isNaN(pos)) {
+                            basicBot.settings.skipPosition = pos;
+                            return API.sendChat(subChat(basicBot.chat.skippos, {
+                                name: chat.un,
+                                position: basicBot.settings.skipPosition
+                            }));
+                        } else return API.sendChat(subChat(basicBot.chat.invalidpositionspecified, {
+                            name: chat.un
+                        }));
+                    }
+                }
+            },
+			
             mehCommand: {
                 command: 'meh',
                 rank: 'mod',
